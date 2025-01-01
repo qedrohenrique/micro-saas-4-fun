@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function Home() {
   const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
 
-  async function handleClick(subscription: boolean) {
+  async function handleClick() {
     try {
       setIsCreatingCheckout(true);
       const checkoutResponse = await fetch("/api/create-checkout", {
@@ -16,7 +16,6 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subscription }),
       });
 
       const stripeClient = await loadStripe(
@@ -38,7 +37,7 @@ export default function Home() {
     <>
       <div className="flex flex-col items-center justify-center h-screen">
         <HomeForm />
-        <Button onClick={() => handleClick(true)} disabled={isCreatingCheckout}>Comprar</Button>
+        <Button onClick={() => handleClick()} disabled={isCreatingCheckout}>Comprar</Button>
       </div>
     </>
   );
