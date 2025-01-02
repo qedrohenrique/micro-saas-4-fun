@@ -1,3 +1,4 @@
+import { deleteFolderFromStorage } from "@/lib/firebase/firebase";
 import stripe from "@/lib/stripe";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -5,6 +6,7 @@ import { NextResponse } from "next/server";
 const secret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req: Request) {
+
   try {
     const body = await req.text();
     const signature = (await headers()).get("stripe-signature");
@@ -24,7 +26,8 @@ export async function POST(req: Request) {
 
       case "checkout.session.expired":
         if (event.data.object.payment_status === "unpaid") {
-          console.log("checkout expirado");
+          const portraitId = event.data.object.metadata?.portraitId;
+          deleteFolderFromStorage(`portraits/${portraitId}`);
         }
         break;
 
