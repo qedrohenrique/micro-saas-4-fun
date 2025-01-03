@@ -15,7 +15,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import QRCode from 'qrcode';
 
 export const HomeForm = () => {
-  const [selectedPicture, setSelectedPicture] = useState<File | null>(null);
+  const [selectedPictures, setSelectedPictures] = useState<FileList | null>(null);
   const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
 
   const form = useForm<z.infer<typeof homeFormSchema>>({
@@ -64,8 +64,8 @@ export const HomeForm = () => {
   }
 
   async function onSubmit(values: z.infer<typeof homeFormSchema>) {
-    if(!selectedPicture) {
-      // Alert no pictures selected
+    if(!selectedPictures) {
+      console.log(selectedPictures);
       return;
     }
 
@@ -83,7 +83,7 @@ export const HomeForm = () => {
       { type: "application/json" }
     );
 
-    uploadToStorage(`portraits/${portraitId}/image.png`, selectedPicture);
+    [...selectedPictures].forEach((picture, idx) => uploadToStorage(`portraits/${portraitId}/images/image-${idx}.png`, picture));
     uploadToStorage(`portraits/${portraitId}/info.json`, jsonFile);
     createCheckout(portraitId);
   }
@@ -97,12 +97,11 @@ export const HomeForm = () => {
           render={({ field }) => <EmailFormItem field={field} />}
         />
         <FormField
-          control={form.control}
           name="pictures"
           render={({ field }) => (
             <PictureFormItem
               field={field}
-              setSelectedPicture={setSelectedPicture}
+              setSelectedPictures={setSelectedPictures}
             />
           )}
         />

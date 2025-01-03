@@ -2,7 +2,7 @@ import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../../ui/input";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const PictureFormItem = ({ field, setSelectedPicture }: any) => {
+export const PictureFormItem = ({ field, setSelectedPictures }: any) => {
   const { onChange } = field;
 
   return (
@@ -15,9 +15,10 @@ export const PictureFormItem = ({ field, setSelectedPicture }: any) => {
           type="file"  
           accept="image/*" 
           onChange={(e) => {
-            setSelectedPicture(e?.target?.files?.[0]);
+            setSelectedPictures(e?.target?.files);
             onChange(e);
           }}
+          multiple
         />
       </FormControl>
       <FormDescription>
