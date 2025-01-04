@@ -22,7 +22,7 @@ export const HomeForm = () => {
     resolver: zodResolver(homeFormSchema),
     defaultValues: {
       email: "",
-      pictures: undefined,
+      pictures: [],
     },
   });
 
@@ -97,6 +97,7 @@ export const HomeForm = () => {
           render={({ field }) => <EmailFormItem field={field} />}
         />
         <FormField
+          control={form.control}
           name="pictures"
           render={({ field }) => (
             <PictureFormItem
