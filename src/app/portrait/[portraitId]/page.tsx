@@ -12,17 +12,18 @@ import { getDownloadURL, listAll } from "@firebase/storage";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner"; // Supondo que você tenha um componente de Spinner
+import React from "react";
 
 interface PortraitParams {
   portraitId: string;
 }
 
 interface PortraitPageProps {
-  params: PortraitParams;
+  params: Promise<PortraitParams>;
 }
 
 export default function PortraitPage({ params }: PortraitPageProps) {
-  const { portraitId } = params;
+  const { portraitId } = React.use(params);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
